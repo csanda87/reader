@@ -7,7 +7,12 @@
         <div class="col-md-8">
             <div class="d-flex flex-row-reverse">
                 <div class="p-2">
-                    <a href="/books/{{ $book->id }}/edit" class="btn btn-primary">Edit Book</a>
+                    <a href="/books/{{ $book->id }}/edit" class="btn btn-primary">
+                        <svg class="i-edit" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <path d="M30 7 L25 2 5 22 3 29 10 27 Z M21 6 L26 11 Z M5 22 L10 27 Z"></path>
+                        </svg>
+                        Edit Book
+                    </a>
                 </div>
             </div>
             <div class="row">
@@ -15,7 +20,7 @@
                     @if($book->image)
                         <img class="img-fluid" src="{{ Storage::url($book->image) }}" alt="{{ $book->title }}">
                     @else
-                        <img class="img-fluid" src="http://via.placeholder.com/150x350" alt="{{ $book->title }}">
+                        <img class="img-fluid" src="http://via.placeholder.com/350x500" alt="{{ $book->title }}">
                     @endif
                 </div>
                 <div class="col-md-8">

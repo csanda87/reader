@@ -20,6 +20,8 @@ class BookController extends Controller
 
     public function destroy($id)
     {
-        return $this->book->findOrFail($id)->delete();
+        $this->book->findOrFail($id)->delete();
+
+        return response('Successfully deleted the book', 200);
     }
 }

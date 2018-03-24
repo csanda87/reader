@@ -47275,13 +47275,75 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             books: [],
             loading: false,
-            searchQuery: ''
+            searchQuery: '',
+            showSearch: false,
+            sortKey: '',
+            sortReverse: false
         };
     },
 
@@ -47290,9 +47352,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             return this.books.filter(function (book) {
-                if (_this.searchQuery == '') {
+                if (_this.searchQuery == '' && _this.sortKey == '') {
                     return true;
                 }
+
+                // if (this.sortKey == 'author') {
+                //     return this.books.sort((a,b) => {
+                //         if (a.author < b.author) return -1;
+                //         if (a.author > b.author) return 1;
+                //         return 0;
+                //     });
+                // }
 
                 var searchTitle = book.title.toLowerCase();
                 var searchAuthor = book.author.toLowerCase();
@@ -47301,13 +47371,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
     methods: {
-        getBooks: function getBooks() {
+        deleteBook: function deleteBook(id) {
             var _this2 = this;
 
+            if (window.confirm("Are you sure you want to remove this book?")) {
+                alert('delete book id ' + id);
+                axios.delete('/api/books/' + id).then(function (response) {
+                    _this2.books = _this2.books.filter(function (book) {
+                        return book.id !== id;
+                    });
+                }).catch(function (error) {
+                    alert('There was an error deleting the book.');
+                });
+            }
+        },
+        getBooks: function getBooks() {
+            var _this3 = this;
+
             axios.get('/api/books').then(function (response) {
-                _this2.books = response.data;
-                _this2.loading = false;
+                _this3.books = response.data;
+                _this3.loading = false;
             });
+        },
+        sortBy: function sortBy(sortKey) {
+            this.sortReverse = this.sortKey == sortKey ? !this.sortReverse : false;
+            this.sortKey = sortKey;
+        },
+        toggleSearch: function toggleSearch() {
+            this.showSearch = !this.showSearch;
         }
     },
     created: function created() {
@@ -47325,29 +47416,228 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card card-default" }, [
-    _c("div", { staticClass: "card-header" }, [_vm._v("Books")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-body" }, [
-      _vm.loading
-        ? _c("div", [_vm._v("Loading...")])
-        : _c(
-            "div",
-            { staticClass: "list-group list-group-flush" },
-            _vm._l(_vm.filteredBooks, function(book) {
-              return _c(
-                "a",
-                {
-                  staticClass: "list-group-item list-group-item-action",
-                  attrs: { href: "/books/" + book.id }
-                },
-                [
-                  _c("b", [_vm._v(_vm._s(book.title))]),
-                  _vm._v(" - " + _vm._s(book.author))
-                ]
-              )
-            })
+    _c("div", { staticClass: "card-header" }, [
+      _c("h1", { staticClass: "m-0 float-left" }, [_vm._v("Books")]),
+      _vm._v(" "),
+      _c(
+        "a",
+        {
+          staticClass: "btn btn-primary float-right ml-1",
+          attrs: { href: "/books/create" }
+        },
+        [
+          _c(
+            "svg",
+            {
+              staticClass: "i-plus",
+              attrs: {
+                viewBox: "0 0 32 32",
+                width: "12",
+                height: "12",
+                fill: "none",
+                stroke: "currentcolor",
+                "stroke-linecap": "round",
+                "stroke-linejoin": "round",
+                "stroke-width": "2"
+              }
+            },
+            [_c("path", { attrs: { d: "M16 2 L16 30 M2 16 L30 16" } })]
           )
-    ])
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-default float-right ml-1",
+          on: { click: _vm.toggleSearch }
+        },
+        [
+          _c(
+            "svg",
+            {
+              staticClass: "i-search",
+              attrs: {
+                viewBox: "0 0 32 32",
+                width: "12",
+                height: "12",
+                fill: "none",
+                stroke: "currentcolor",
+                "stroke-linecap": "round",
+                "stroke-linejoin": "round",
+                "stroke-width": "2"
+              }
+            },
+            [
+              _c("circle", { attrs: { cx: "14", cy: "14", r: "12" } }),
+              _vm._v(" "),
+              _c("path", { attrs: { d: "M23 23 L30 30" } })
+            ]
+          )
+        ]
+      )
+    ]),
+    _vm._v(" "),
+    _vm.loading
+      ? _c("div", { staticClass: "card-body" }, [_vm._v("Loading...")])
+      : _c("div", [
+          _vm.showSearch
+            ? _c("div", [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.searchQuery,
+                      expression: "searchQuery"
+                    }
+                  ],
+                  staticClass: "form-control",
+                  attrs: { type: "text", placeholder: "Search..." },
+                  domProps: { value: _vm.searchQuery },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.searchQuery = $event.target.value
+                    }
+                  }
+                })
+              ])
+            : _vm._e(),
+          _vm._v(" "),
+          _c("table", { staticClass: "table table-striped" }, [
+            _c("thead", [
+              _c("tr", [
+                _c("th", [_vm._v("Cover")]),
+                _vm._v(" "),
+                _c("th", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          _vm.sortBy("title")
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Title\n                        "
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", [
+                  _c(
+                    "a",
+                    {
+                      attrs: { href: "#" },
+                      on: {
+                        click: function($event) {
+                          _vm.sortBy("author")
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                            Author\n                        "
+                      )
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
+                _c("th", [_vm._v("Pub. Date")]),
+                _vm._v(" "),
+                _c("th")
+              ])
+            ]),
+            _vm._v(" "),
+            _c(
+              "tbody",
+              _vm._l(_vm.filteredBooks, function(book) {
+                return _c("tr", [
+                  _c("td", { attrs: { width: "50px" } }, [
+                    _c("a", { attrs: { href: "/books/" + book.id } }, [
+                      book.image
+                        ? _c("img", {
+                            staticClass: "img-fluid",
+                            attrs: {
+                              src: "/storage/" + book.image,
+                              alt: book.title
+                            }
+                          })
+                        : _vm._e()
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [
+                    _c("a", { attrs: { href: "/books/" + book.id } }, [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(book.title) +
+                          "\n                        "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("td", [_vm._v(_vm._s(book.author))]),
+                  _vm._v(" "),
+                  _c("td", { attrs: { width: "100px" } }, [
+                    _vm._v(_vm._s(book.publication_date))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "td",
+                    { staticClass: "text-danger", attrs: { width: "25px" } },
+                    [
+                      _c(
+                        "button",
+                        {
+                          staticClass: "btn btn-sm btn-outline-danger",
+                          on: {
+                            click: function($event) {
+                              _vm.deleteBook(book.id)
+                            }
+                          }
+                        },
+                        [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "i-trash",
+                              attrs: {
+                                viewBox: "0 0 32 32",
+                                width: "12",
+                                height: "12",
+                                fill: "none",
+                                stroke: "currentcolor",
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d:
+                                    "M28 6 L6 6 8 30 24 30 26 6 4 6 M16 12 L16 24 M21 12 L20 24 M11 12 L12 24 M12 6 L13 2 19 2 20 6"
+                                }
+                              })
+                            ]
+                          )
+                        ]
+                      )
+                    ]
+                  )
+                ])
+              })
+            )
+          ])
+        ])
   ])
 }
 var staticRenderFns = []

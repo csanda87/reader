@@ -42,7 +42,12 @@
                         </div>
 
                         <div class="form-group">
-                            <input type="submit" value="Add Book" class="btn btn-primary">
+                            <button type="submit" class="btn btn-primary">
+                                <svg class="i-plus" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3">
+                                    <path d="M16 2 L16 30 M2 16 L30 16"></path>
+                                </svg>
+                                Add Book
+                            </button>
                         </div>
                     </form>
                 </div>
