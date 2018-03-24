@@ -19,6 +19,13 @@
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+
+    <script>
+        window.Config = {!! json_encode([
+            'apiToken' => Auth::user()->api_token,
+            'csrfToken' => csrf_token()
+        ]) !!};
+    </script>
 </head>
 <body>
     <div id="app">

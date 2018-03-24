@@ -14043,6 +14043,10 @@ if (token) {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+if (window.Config.apiToken) {
+  window.axios.defaults.headers.common['Authorization'] = 'Bearer ' + window.Config.apiToken;
+}
+
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
  * for events that are broadcast by Laravel. Echo and event broadcasting
@@ -47276,10 +47280,43 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        console.log('Component mounted.');
+    data: function data() {
+        return {
+            books: [],
+            searchQuery: ''
+        };
+    },
+
+    computed: {
+        filteredBooks: function filteredBooks() {
+            var _this = this;
+
+            return this.books.filter(function (book) {
+                if (_this.searchQuery == '') {
+                    return true;
+                }
+
+                var searchTitle = book.title.toLowerCase();
+                var searchAuthor = book.author.toLowerCase();
+                return searchTitle.indexOf(_this.searchQuery.toLowerCase()) > -1 || searchAuthor.indexOf(_this.searchQuery.toLowerCase()) > -1;
+            });
+        }
+    },
+    methods: {
+        getBooks: function getBooks() {
+            var _this2 = this;
+
+            axios.get('/api/books').then(function (response) {
+                _this2.books = response.data;
+            });
+        }
+    },
+    created: function created() {
+        this.getBooks();
     }
 });
 
@@ -47305,9 +47342,11 @@ var staticRenderFns = [
             _c("div", { staticClass: "card-header" }, [_vm._v("Books")]),
             _vm._v(" "),
             _c("div", { staticClass: "card-body" }, [
-              _vm._v(
-                "\n                    I'm an example component.\n                "
-              )
+              _c("ul", { staticClass: "list-group" }, [
+                _c("li", { staticClass: "list-group-item" }, [
+                  _vm._v("Cras justo odio")
+                ])
+              ])
             ])
           ])
         ])
