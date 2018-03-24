@@ -1,0 +1,36 @@
+@extends('layouts.app')
+
+@section('content')
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="d-flex flex-row-reverse">
+                <div class="p-2">
+                    <a href="/books/{{ $book->id }}/edit" class="btn btn-primary">Edit Book</a>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    @if($book->image)
+                        <img class="img-fluid" src="{{ Storage::url($book->image) }}" alt="{{ $book->title }}">
+                    @else
+                        <img class="img-fluid" src="http://via.placeholder.com/150x350" alt="{{ $book->title }}">
+                    @endif
+                </div>
+                <div class="col-md-8">
+                    <h1 class="mt-0">{{ $book->title }}</h1>
+                    <ul class="list-unstyled">
+                        <li><b>Author:</b> {{ $book->author }}</li>
+                        @if($book->publication_date)
+                            <li><b>Publication Date:</b> {{ $book->publication_date }}</li>
+                        @endif
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@endsection

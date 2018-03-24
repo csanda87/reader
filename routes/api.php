@@ -14,5 +14,5 @@ use Illuminate\Http\Request;
 */
 
 Route::group(['middleware' => ['auth:api']], function () {
-	Route::apiResource('/books', 'BookController');
+	Route::apiResource('/books', 'Api\BookController')->only(['index', 'destroy']);
 });

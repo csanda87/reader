@@ -7,5 +7,7 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', function() {
-	return view('home');
+	return redirect('/books');
 });
+
+Route::resource('/books', 'BookController')->except(['destroy']);

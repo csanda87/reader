@@ -16,8 +16,6 @@ window.Vue = require('vue');
  */
 
 Vue.component('book-index', require('./components/book/index.vue'));
-Vue.component('book-create', require('./components/book/create.vue'));
-Vue.component('book-edit', require('./components/book/edit.vue'));
 
 const app = new Vue({
     el: '#app'

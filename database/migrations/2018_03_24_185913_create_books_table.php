@@ -19,7 +19,7 @@ class CreateBooksTable extends Migration
             $table->string('author');
             $table->date('publication_date')->nullable();
             $table->string('image')->nullable();
-            $table->integer('order');
+            $table->integer('order')->nullable();
             $table->timestamps();
         });
     }

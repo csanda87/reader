@@ -22,7 +22,7 @@
 
     <script>
         window.Config = {!! json_encode([
-            'apiToken' => Auth::user()->api_token,
+            'apiToken' => Auth::user() ? Auth::user()->api_token : '',
             'csrfToken' => csrf_token()
         ]) !!};
     </script>
@@ -41,7 +41,9 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        @auth
+                            <li><a class="nav-link" href="/books">Book List</a></li>
+                        @endauth
                     </ul>
 
                     <!-- Right Side Of Navbar -->
