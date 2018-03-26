@@ -16,7 +16,7 @@
         </div>
 
         <div v-if="loading" class="card-body">Loading...</div>
-        <div v-else>
+        <div v-else-if="books.length">
             <div v-if="showSearch">
                 <input v-model="searchQuery" type="text" class="form-control" placeholder="Search...">
             </div>
@@ -68,6 +68,9 @@
                     </tr>
                 </draggable>
             </table>
+        </div>
+        <div v-else class="card-body">
+            <p class="alert alert-info">No books. <a href="/books/create">Add one now</a></p>
         </div>
     </div>
 </template>
