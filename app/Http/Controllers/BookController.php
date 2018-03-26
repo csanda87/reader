@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Book;
 
-use Storage;
-
 class BookController extends Controller
 {
     public function __construct(Book $book)

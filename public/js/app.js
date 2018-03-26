@@ -47619,11 +47619,12 @@ var render = function() {
                                   attrs: { "data-toggle": "button" }
                                 },
                                 [
-                                  _vm._v(
-                                    "\n                            " +
-                                      _vm._s(book.order)
-                                  ),
-                                  _c("br"),
+                                  book.order
+                                    ? _c("span", [
+                                        _vm._v(_vm._s(book.order)),
+                                        _c("br")
+                                      ])
+                                    : _vm._e(),
                                   _vm._v(" "),
                                   _c(
                                     "svg",
@@ -47662,7 +47663,7 @@ var render = function() {
                                 staticClass: "img-fluid",
                                 attrs: {
                                   src: "/storage/" + book.image,
-                                  alt: book.title
+                                  alt: "Book Cover"
                                 }
                               })
                             : _c("img", {

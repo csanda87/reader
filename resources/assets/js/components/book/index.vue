@@ -39,7 +39,7 @@
                     <tr v-for="(book, index) in filteredBooks" :key="book.id">
                         <td v-if="showOrderColumn" width="50px" class="text-center">
                             <button class="btn btn-sm btn-outline-dark" data-toggle="button">
-                                {{ book.order }}<br>
+                                <span v-if="book.order">{{ book.order }}<br></span>
                                 <svg class="i-move" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
                                     <path d="M3 16 L29 16 M16 3 L16 29 M12 7 L16 3 20 7 M12 25 L16 29 20 25 M25 12 L29 16 25 20 M7 12 L3 16 7 20"></path>
                                 </svg>
@@ -47,7 +47,7 @@
                         </td>
                         <td width="50px">
                             <a :href="'/books/'+book.id">
-                                <img v-if="book.image" :src="'/storage/'+book.image" :alt="book.title" class="img-fluid">
+                                <img v-if="book.image" :src="'/storage/'+book.image" alt="Book Cover" class="img-fluid">
                                 <img v-else="book.image" src="http://via.placeholder.com/50x70" alt="No Cover Image" class="img-fluid">
                             </a>
                         </td>
