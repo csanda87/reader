@@ -47387,6 +47387,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             return this.books;
+        },
+        showOrderColumn: function showOrderColumn() {
+            return this.books.length > 1;
         }
     },
     methods: {
@@ -47548,7 +47551,9 @@ var render = function() {
               [
                 _c("thead", [
                   _c("tr", [
-                    _c("th", [_vm._v("Order")]),
+                    _vm.showOrderColumn
+                      ? _c("th", [_vm._v("Order")])
+                      : _vm._e(),
                     _vm._v(" "),
                     _c("th", [_vm._v("Cover")]),
                     _vm._v(" "),
@@ -47594,40 +47599,43 @@ var render = function() {
                   },
                   _vm._l(_vm.filteredBooks, function(book, index) {
                     return _c("tr", { key: book.id }, [
-                      _c(
-                        "td",
-                        {
-                          staticClass: "text-center",
-                          attrs: { width: "50px" }
-                        },
-                        [
-                          _c("a", { attrs: { href: "#" } }, [
-                            _c(
-                              "svg",
-                              {
-                                staticClass: "i-menu",
-                                attrs: {
-                                  viewBox: "0 0 32 32",
-                                  width: "18",
-                                  height: "18",
-                                  fill: "none",
-                                  stroke: "currentcolor",
-                                  "stroke-linecap": "round",
-                                  "stroke-linejoin": "round",
-                                  "stroke-width": "2"
-                                }
-                              },
-                              [
-                                _c("path", {
-                                  attrs: {
-                                    d: "M4 8 L28 8 M4 16 L28 16 M4 24 L28 24"
-                                  }
-                                })
-                              ]
-                            )
-                          ])
-                        ]
-                      ),
+                      _vm.showOrderColumn
+                        ? _c(
+                            "td",
+                            {
+                              staticClass: "text-center",
+                              attrs: { width: "50px" }
+                            },
+                            [
+                              _c("a", { attrs: { href: "#" } }, [
+                                _c(
+                                  "svg",
+                                  {
+                                    staticClass: "i-menu",
+                                    attrs: {
+                                      viewBox: "0 0 32 32",
+                                      width: "18",
+                                      height: "18",
+                                      fill: "none",
+                                      stroke: "currentcolor",
+                                      "stroke-linecap": "round",
+                                      "stroke-linejoin": "round",
+                                      "stroke-width": "2"
+                                    }
+                                  },
+                                  [
+                                    _c("path", {
+                                      attrs: {
+                                        d:
+                                          "M4 8 L28 8 M4 16 L28 16 M4 24 L28 24"
+                                      }
+                                    })
+                                  ]
+                                )
+                              ])
+                            ]
+                          )
+                        : _vm._e(),
                       _vm._v(" "),
                       _c("td", { attrs: { width: "50px" } }, [
                         _c("a", { attrs: { href: "/books/" + book.id } }, [

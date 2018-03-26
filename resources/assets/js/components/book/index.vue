@@ -23,7 +23,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Order</th>
+                        <th v-if="showOrderColumn">Order</th>
                         <th>Cover</th>
                         <th>Title</th>
                         <th>
@@ -38,7 +38,7 @@
 
                 <draggable v-model="books" :element="'tbody'" @end="onEnd">
                     <tr v-for="(book, index) in filteredBooks" :key="book.id">
-                        <td width="50px" class="text-center">
+                        <td v-if="showOrderColumn" width="50px" class="text-center">
                             <a href="#">
                                 <svg class="i-menu" viewBox="0 0 32 32" width="18" height="18" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                     <path d="M4 8 L28 8 M4 16 L28 16 M4 24 L28 24"></path>
@@ -118,6 +118,9 @@
                 }
                 
                 return this.books;
+            },
+            showOrderColumn() {
+                return this.books.length > 1;
             }
         },
         methods: {
