@@ -1,7 +1,7 @@
 <template>
     <div class="card card-default">
         <div class="card-header">
-            <h1 class="m-0 float-left">Books</h1>
+            <h1 class="m-0 float-left">Book List</h1>
             <a href="/books/create" class="btn btn-primary float-right ml-1" title="Add Book">
                 <svg class="i-plus" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <path d="M16 2 L16 30 M2 16 L30 16"></path>
@@ -31,7 +31,6 @@
                                 Author
                             </a>
                         </th>
-                        <th>Pub. Date</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -39,11 +38,12 @@
                 <draggable v-model="books" :element="'tbody'" @end="onEnd">
                     <tr v-for="(book, index) in filteredBooks" :key="book.id">
                         <td v-if="showOrderColumn" width="50px" class="text-center">
-                            <a href="#">
-                                <svg class="i-menu" viewBox="0 0 32 32" width="18" height="18" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                                    <path d="M4 8 L28 8 M4 16 L28 16 M4 24 L28 24"></path>
+                            <button class="btn btn-outline-dark btn-sm" data-toggle="button">
+                                {{ book.order }}<br>
+                                <svg class="i-move" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
+                                    <path d="M3 16 L29 16 M16 3 L16 29 M12 7 L16 3 20 7 M12 25 L16 29 20 25 M25 12 L29 16 25 20 M7 12 L3 16 7 20"></path>
                                 </svg>
-                            </a>
+                            </button>
                         </td>
                         <td width="50px">
                             <a :href="'/books/'+book.id">
@@ -54,10 +54,10 @@
                         <td>
                             <a :href="'/books/'+book.id">
                                 {{ book.title }}
-                            </a>
+                            </a><br>
+                            <small class="text-muted">{{ book.publication_date }}</small>
                         </td>
                         <td>{{ book.author }}</td>
-                        <td width="100px">{{ book.publication_date }}</td>
                         <td width="25px" class="text-danger">
                             <button @click="deleteBook(book.id)" class="btn btn-sm btn-outline-danger">
                                 <svg class="i-trash" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">

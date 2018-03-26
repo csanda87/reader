@@ -47453,7 +47453,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "card card-default" }, [
     _c("div", { staticClass: "card-header" }, [
-      _c("h1", { staticClass: "m-0 float-left" }, [_vm._v("Books")]),
+      _c("h1", { staticClass: "m-0 float-left" }, [_vm._v("Book List")]),
       _vm._v(" "),
       _c(
         "a",
@@ -47578,8 +47578,6 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
-                    _c("th", [_vm._v("Pub. Date")]),
-                    _vm._v(" "),
                     _c("th")
                   ])
                 ]),
@@ -47607,32 +47605,45 @@ var render = function() {
                               attrs: { width: "50px" }
                             },
                             [
-                              _c("a", { attrs: { href: "#" } }, [
-                                _c(
-                                  "svg",
-                                  {
-                                    staticClass: "i-menu",
-                                    attrs: {
-                                      viewBox: "0 0 32 32",
-                                      width: "18",
-                                      height: "18",
-                                      fill: "none",
-                                      stroke: "currentcolor",
-                                      "stroke-linecap": "round",
-                                      "stroke-linejoin": "round",
-                                      "stroke-width": "2"
-                                    }
-                                  },
-                                  [
-                                    _c("path", {
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-outline-dark btn-sm",
+                                  attrs: { "data-toggle": "button" }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                            " +
+                                      _vm._s(book.order)
+                                  ),
+                                  _c("br"),
+                                  _vm._v(" "),
+                                  _c(
+                                    "svg",
+                                    {
+                                      staticClass: "i-move",
                                       attrs: {
-                                        d:
-                                          "M4 8 L28 8 M4 16 L28 16 M4 24 L28 24"
+                                        viewBox: "0 0 32 32",
+                                        width: "16",
+                                        height: "16",
+                                        fill: "none",
+                                        stroke: "currentcolor",
+                                        "stroke-linecap": "round",
+                                        "stroke-linejoin": "round",
+                                        "stroke-width": "1"
                                       }
-                                    })
-                                  ]
-                                )
-                              ])
+                                    },
+                                    [
+                                      _c("path", {
+                                        attrs: {
+                                          d:
+                                            "M3 16 L29 16 M16 3 L16 29 M12 7 L16 3 20 7 M12 25 L16 29 20 25 M25 12 L29 16 25 20 M7 12 L3 16 7 20"
+                                        }
+                                      })
+                                    ]
+                                  )
+                                ]
+                              )
                             ]
                           )
                         : _vm._e(),
@@ -47664,14 +47675,15 @@ var render = function() {
                               _vm._s(book.title) +
                               "\n                        "
                           )
+                        ]),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("small", { staticClass: "text-muted" }, [
+                          _vm._v(_vm._s(book.publication_date))
                         ])
                       ]),
                       _vm._v(" "),
                       _c("td", [_vm._v(_vm._s(book.author))]),
-                      _vm._v(" "),
-                      _c("td", { attrs: { width: "100px" } }, [
-                        _vm._v(_vm._s(book.publication_date))
-                      ]),
                       _vm._v(" "),
                       _c(
                         "td",
