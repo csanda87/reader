@@ -13,13 +13,6 @@
                     <path d="M23 23 L30 30"></path>
                 </svg>
             </button>
-            <!-- <button v-if="!orderedList" @click="orderList" class="btn btn-default float-right ml-1" title="Adjust Books Order" data-toggle="button">
-                <svg class="i-book" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <path d="M16 7 C16 7 9 1 2 6 L2 28 C9 23 16 28 16 28 16 28 23 23 30 28 L30 6 C23 1 16 7 16 7 Z M16 7 L16 28"></path>
-                </svg>
-                Reading List
-            </button>
-            <button v-else @click="saveReadingListOrder" class="btn btn-primary float-right ml-1">Save Reading List Order</button> -->
         </div>
 
         <div v-if="loading" class="card-body">Loading...</div>
@@ -45,9 +38,9 @@
 
                 <draggable v-model="books" :element="'tbody'" @end="onEnd">
                     <tr v-for="(book, index) in filteredBooks" :key="book.id">
-                        <td width="50px">
+                        <td width="50px" class="text-center">
                             <a href="#">
-                                <svg class="i-menu" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                <svg class="i-menu" viewBox="0 0 32 32" width="18" height="18" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                     <path d="M4 8 L28 8 M4 16 L28 16 M4 24 L28 24"></path>
                                 </svg>
                             </a>
