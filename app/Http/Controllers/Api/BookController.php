@@ -15,7 +15,7 @@ class BookController extends Controller
 
     public function index()
     {
-        return $this->book->all();
+        return $this->book->orderBy('order')->get();
     }
 
     public function destroy($id)

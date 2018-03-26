@@ -15,4 +15,18 @@ use Illuminate\Http\Request;
 
 Route::group(['middleware' => ['auth:api']], function () {
 	Route::apiResource('/books', 'Api\BookController')->only(['index', 'destroy']);
+
+	Route::post('/reading-list-order', function(Request $request) {
+		$books = [];
+		
+		foreach ($request->all() as $i => $book) {
+			$book = App\Book::findOrFail($book['id']);
+			$book->order = $i + 1;
+			$book->save();
+
+			$books[] = $book;
+		}
+
+		return $books;
+	});
 });

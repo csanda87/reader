@@ -7,17 +7,19 @@
                     <path d="M16 2 L16 30 M2 16 L30 16"></path>
                 </svg>
             </a>
-            <button @click="toggleSearch" class="btn btn-default float-right ml-1" title="Search">
+            <button @click="toggleSearch" class="btn btn-default float-right ml-1" title="Search" data-toggle="button">
                 <svg class="i-search" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <circle cx="14" cy="14" r="12"></circle>
                     <path d="M23 23 L30 30"></path>
                 </svg>
             </button>
-            <button @click="orderList" class="btn btn-default float-right ml-1" title="Adjust Books Order">
-                <svg class="i-move" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
-                    <path d="M3 16 L29 16 M16 3 L16 29 M12 7 L16 3 20 7 M12 25 L16 29 20 25 M25 12 L29 16 25 20 M7 12 L3 16 7 20"></path>
+            <!-- <button v-if="!orderedList" @click="orderList" class="btn btn-default float-right ml-1" title="Adjust Books Order" data-toggle="button">
+                <svg class="i-book" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M16 7 C16 7 9 1 2 6 L2 28 C9 23 16 28 16 28 16 28 23 23 30 28 L30 6 C23 1 16 7 16 7 Z M16 7 L16 28"></path>
                 </svg>
+                Reading List
             </button>
+            <button v-else @click="saveReadingListOrder" class="btn btn-primary float-right ml-1">Save Reading List Order</button> -->
         </div>
 
         <div v-if="loading" class="card-body">Loading...</div>
@@ -28,7 +30,7 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th v-if="orderedList">Move</th>
+                        <th>Order</th>
                         <th>Cover</th>
                         <th>Title</th>
                         <th>
@@ -40,11 +42,12 @@
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
-                    <tr v-for="book in filteredBooks">
-                        <td v-if="orderedList" width="50px">
+
+                <draggable v-model="books" :element="'tbody'" @end="onEnd">
+                    <tr v-for="(book, index) in filteredBooks" :key="book.id">
+                        <td width="50px">
                             <a href="#">
-                                <svg class="i-menu" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                <svg class="i-menu" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                     <path d="M4 8 L28 8 M4 16 L28 16 M4 24 L28 24"></path>
                                 </svg>
                             </a>
@@ -70,22 +73,23 @@
                             </button>
                         </td>
                     </tr>
-                </tbody>
+                </draggable>
             </table>
         </div>
-        <!-- <div v-else class="list-group list-group-flush">
-            <a v-for="book in filteredBooks" :href="'/books/'+book.id" class="list-group-item list-group-item-action"><b>{{ book.title }}</b> - {{ book.author }}</a>
-        </div> -->
     </div>
 </template>
 
 <script>
+    import draggable from 'vuedraggable'
+    
     export default {
+        components: {
+            draggable,
+        },
         data() {
             return {
                 books: [],
                 loading: false,
-                orderedList: false,
                 searchQuery: '',
                 showSearch: false,
                 sortKey: '',
@@ -94,26 +98,30 @@
         },
         computed: {
             filteredBooks() {
-                return this.books.filter((book) => {
-                    if (this.searchQuery == '') {
-                        return true;
-                    }
-                    let searchTitle = book.title.toLowerCase();
-                    let searchAuthor = book.author.toLowerCase();
-                    return searchTitle.indexOf(this.searchQuery.toLowerCase()) > -1 || searchAuthor.indexOf(this.searchQuery.toLowerCase()) > -1;
-                }).sort((a,b) => {
-                    if (this.sortKey == 'author' && this.sortReverse) {
-                        if (a.author < b.author) return 1;
-                        if (a.author > b.author) return -1;
-                        return 0;
-                    } else if (this.sortKey == 'author') {
-                        if (a.author < b.author) return -1;
-                        if (a.author > b.author) return 1;
-                        return 0;
-                    }
+                if (this.searchQuery || this.sortKey) {
+                    return this.books.filter((book) => {
+                        if (this.searchQuery == '') {
+                            return true;
+                        }
+                        let searchTitle = book.title.toLowerCase();
+                        let searchAuthor = book.author.toLowerCase();
+                        return searchTitle.indexOf(this.searchQuery.toLowerCase()) > -1 || searchAuthor.indexOf(this.searchQuery.toLowerCase()) > -1;
+                    }).sort((a,b) => {
+                        if (this.sortKey == 'author' && this.sortReverse) {
+                            if (a.author < b.author) return 1;
+                            if (a.author > b.author) return -1;
+                            return 0;
+                        } else if (this.sortKey == 'author') {
+                            if (a.author < b.author) return -1;
+                            if (a.author > b.author) return 1;
+                            return 0;
+                        }
 
-                    return;
-                });
+                        return;
+                    });
+                }
+                
+                return this.books;
             }
         },
         methods: {
@@ -126,19 +134,29 @@
                                 return book.id !== id;
                             });
                         }).catch((error) => {
-                            alert('There was an error deleting the book.');
+                            alert('Whoops! There was an error deleting the book.');
                         });
                 }
+            },
+            onEnd() {
+                this.saveReadingListOrder();
             },
             getBooks() {
                 axios.get('/api/books')
                     .then((response) => {
                         this.books = response.data;
                         this.loading = false;
+                    }).catch((error) => {
+                        alert('Whoops! There was an error getting the books.');
                     });
             },
-            orderList() {
-                this.orderedList = !this.orderedList;
+            saveReadingListOrder() {
+                this.loading = true;
+                axios.post('/api/reading-list-order', this.books)
+                    .then((response) => {
+                        this.books = response.data;
+                        this.loading = false;
+                    });
             },
             sortBy(sortKey) {
                 this.sortReverse = (this.sortKey == sortKey) ? !this.sortReverse : false;
