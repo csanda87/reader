@@ -47334,12 +47334,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             books: [],
             loading: false,
+            orderedList: false,
             searchQuery: '',
             showSearch: false,
             sortKey: '',
@@ -47352,21 +47362,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             return this.books.filter(function (book) {
-                if (_this.searchQuery == '' && _this.sortKey == '') {
+                if (_this.searchQuery == '') {
                     return true;
                 }
-
-                // if (this.sortKey == 'author') {
-                //     return this.books.sort((a,b) => {
-                //         if (a.author < b.author) return -1;
-                //         if (a.author > b.author) return 1;
-                //         return 0;
-                //     });
-                // }
-
                 var searchTitle = book.title.toLowerCase();
                 var searchAuthor = book.author.toLowerCase();
                 return searchTitle.indexOf(_this.searchQuery.toLowerCase()) > -1 || searchAuthor.indexOf(_this.searchQuery.toLowerCase()) > -1;
+            }).sort(function (a, b) {
+                if (_this.sortKey == 'author' && _this.sortReverse) {
+                    if (a.author < b.author) return 1;
+                    if (a.author > b.author) return -1;
+                    return 0;
+                } else if (_this.sortKey == 'author') {
+                    if (a.author < b.author) return -1;
+                    if (a.author > b.author) return 1;
+                    return 0;
+                }
+
+                return;
             });
         }
     },
@@ -47392,6 +47405,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this3.books = response.data;
                 _this3.loading = false;
             });
+        },
+        orderList: function orderList() {
+            this.orderedList = !this.orderedList;
         },
         sortBy: function sortBy(sortKey) {
             this.sortReverse = this.sortKey == sortKey ? !this.sortReverse : false;
@@ -47423,7 +47439,7 @@ var render = function() {
         "a",
         {
           staticClass: "btn btn-primary float-right ml-1",
-          attrs: { href: "/books/create" }
+          attrs: { href: "/books/create", title: "Add Book" }
         },
         [
           _c(
@@ -47450,6 +47466,7 @@ var render = function() {
         "button",
         {
           staticClass: "btn btn-default float-right ml-1",
+          attrs: { title: "Search" },
           on: { click: _vm.toggleSearch }
         },
         [
@@ -47472,6 +47489,41 @@ var render = function() {
               _c("circle", { attrs: { cx: "14", cy: "14", r: "12" } }),
               _vm._v(" "),
               _c("path", { attrs: { d: "M23 23 L30 30" } })
+            ]
+          )
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-default float-right ml-1",
+          attrs: { title: "Adjust Books Order" },
+          on: { click: _vm.orderList }
+        },
+        [
+          _c(
+            "svg",
+            {
+              staticClass: "i-move",
+              attrs: {
+                viewBox: "0 0 32 32",
+                width: "12",
+                height: "12",
+                fill: "none",
+                stroke: "currentcolor",
+                "stroke-linecap": "round",
+                "stroke-linejoin": "round",
+                "stroke-width": "2"
+              }
+            },
+            [
+              _c("path", {
+                attrs: {
+                  d:
+                    "M3 16 L29 16 M16 3 L16 29 M12 7 L16 3 20 7 M12 25 L16 29 20 25 M25 12 L29 16 25 20 M7 12 L3 16 7 20"
+                }
+              })
             ]
           )
         ]
@@ -47510,26 +47562,11 @@ var render = function() {
           _c("table", { staticClass: "table table-striped" }, [
             _c("thead", [
               _c("tr", [
+                _vm.orderedList ? _c("th", [_vm._v("Move")]) : _vm._e(),
+                _vm._v(" "),
                 _c("th", [_vm._v("Cover")]),
                 _vm._v(" "),
-                _c("th", [
-                  _c(
-                    "a",
-                    {
-                      attrs: { href: "#" },
-                      on: {
-                        click: function($event) {
-                          _vm.sortBy("title")
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                            Title\n                        "
-                      )
-                    ]
-                  )
-                ]),
+                _c("th", [_vm._v("Title")]),
                 _vm._v(" "),
                 _c("th", [
                   _c(
@@ -47560,6 +47597,36 @@ var render = function() {
               "tbody",
               _vm._l(_vm.filteredBooks, function(book) {
                 return _c("tr", [
+                  _vm.orderedList
+                    ? _c("td", { attrs: { width: "50px" } }, [
+                        _c("a", { attrs: { href: "#" } }, [
+                          _c(
+                            "svg",
+                            {
+                              staticClass: "i-menu",
+                              attrs: {
+                                viewBox: "0 0 32 32",
+                                width: "24",
+                                height: "24",
+                                fill: "none",
+                                stroke: "currentcolor",
+                                "stroke-linecap": "round",
+                                "stroke-linejoin": "round",
+                                "stroke-width": "2"
+                              }
+                            },
+                            [
+                              _c("path", {
+                                attrs: {
+                                  d: "M4 8 L28 8 M4 16 L28 16 M4 24 L28 24"
+                                }
+                              })
+                            ]
+                          )
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _c("td", { attrs: { width: "50px" } }, [
                     _c("a", { attrs: { href: "/books/" + book.id } }, [
                       book.image
@@ -47570,7 +47637,13 @@ var render = function() {
                               alt: book.title
                             }
                           })
-                        : _vm._e()
+                        : _c("img", {
+                            staticClass: "img-fluid",
+                            attrs: {
+                              src: "http://via.placeholder.com/50x70",
+                              alt: "No Cover Image"
+                            }
+                          })
                     ])
                   ]),
                   _vm._v(" "),

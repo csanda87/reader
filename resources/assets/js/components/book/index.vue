@@ -2,15 +2,20 @@
     <div class="card card-default">
         <div class="card-header">
             <h1 class="m-0 float-left">Books</h1>
-            <a href="/books/create" class="btn btn-primary float-right ml-1">
+            <a href="/books/create" class="btn btn-primary float-right ml-1" title="Add Book">
                 <svg class="i-plus" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <path d="M16 2 L16 30 M2 16 L30 16"></path>
                 </svg>
             </a>
-            <button @click="toggleSearch" class="btn btn-default float-right ml-1">
+            <button @click="toggleSearch" class="btn btn-default float-right ml-1" title="Search">
                 <svg class="i-search" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <circle cx="14" cy="14" r="12"></circle>
                     <path d="M23 23 L30 30"></path>
+                </svg>
+            </button>
+            <button @click="orderList" class="btn btn-default float-right ml-1" title="Adjust Books Order">
+                <svg class="i-move" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M3 16 L29 16 M16 3 L16 29 M12 7 L16 3 20 7 M12 25 L16 29 20 25 M25 12 L29 16 25 20 M7 12 L3 16 7 20"></path>
                 </svg>
             </button>
         </div>
@@ -23,12 +28,9 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th v-if="orderedList">Move</th>
                         <th>Cover</th>
-                        <th>
-                            <a href="#" @click="sortBy('title')">
-                                Title
-                            </a>
-                        </th>
+                        <th>Title</th>
                         <th>
                             <a href="#" @click="sortBy('author')">
                                 Author
@@ -40,11 +42,18 @@
                 </thead>
                 <tbody>
                     <tr v-for="book in filteredBooks">
+                        <td v-if="orderedList" width="50px">
+                            <a href="#">
+                                <svg class="i-menu" viewBox="0 0 32 32" width="24" height="24" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                                    <path d="M4 8 L28 8 M4 16 L28 16 M4 24 L28 24"></path>
+                                </svg>
+                            </a>
+                        </td>
                         <td width="50px">
                             <a :href="'/books/'+book.id">
                                 <img v-if="book.image" :src="'/storage/'+book.image" :alt="book.title" class="img-fluid">
+                                <img v-else="book.image" src="http://via.placeholder.com/50x70" alt="No Cover Image" class="img-fluid">
                             </a>
-                            
                         </td>
                         <td>
                             <a :href="'/books/'+book.id">
@@ -76,6 +85,7 @@
             return {
                 books: [],
                 loading: false,
+                orderedList: false,
                 searchQuery: '',
                 showSearch: false,
                 sortKey: '',
@@ -85,24 +95,25 @@
         computed: {
             filteredBooks() {
                 return this.books.filter((book) => {
-                    if (this.searchQuery == '' && this.sortKey == '') {
+                    if (this.searchQuery == '') {
                         return true;
                     }
-
-                    // if (this.sortKey == 'author') {
-                    //     return this.books.sort((a,b) => {
-                    //         if (a.author < b.author) return -1;
-                    //         if (a.author > b.author) return 1;
-                    //         return 0;
-                    //     });
-                    // }
-
                     let searchTitle = book.title.toLowerCase();
                     let searchAuthor = book.author.toLowerCase();
                     return searchTitle.indexOf(this.searchQuery.toLowerCase()) > -1 || searchAuthor.indexOf(this.searchQuery.toLowerCase()) > -1;
+                }).sort((a,b) => {
+                    if (this.sortKey == 'author' && this.sortReverse) {
+                        if (a.author < b.author) return 1;
+                        if (a.author > b.author) return -1;
+                        return 0;
+                    } else if (this.sortKey == 'author') {
+                        if (a.author < b.author) return -1;
+                        if (a.author > b.author) return 1;
+                        return 0;
+                    }
 
-
-                })
+                    return;
+                });
             }
         },
         methods: {
@@ -125,6 +136,9 @@
                         this.books = response.data;
                         this.loading = false;
                     });
+            },
+            orderList() {
+                this.orderedList = !this.orderedList;
             },
             sortBy(sortKey) {
                 this.sortReverse = (this.sortKey == sortKey) ? !this.sortReverse : false;
