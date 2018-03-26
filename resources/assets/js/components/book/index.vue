@@ -5,20 +5,20 @@
             <a href="/books/create" class="btn btn-primary float-right ml-1" title="Add Book">
                 <svg class="i-plus" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <path d="M16 2 L16 30 M2 16 L30 16"></path>
-                </svg>
+                </svg> Add Book
             </a>
-            <button @click="toggleSearch" class="btn btn-default float-right ml-1" title="Search" data-toggle="button">
+            <button @click="toggleSearch" class="btn btn-light float-right ml-1" title="Search" data-toggle="button">
                 <svg class="i-search" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                     <circle cx="14" cy="14" r="12"></circle>
                     <path d="M23 23 L30 30"></path>
-                </svg>
+                </svg> Search
             </button>
         </div>
 
         <div v-if="loading" class="card-body">Loading...</div>
         <div v-else-if="books.length">
             <div v-if="showSearch">
-                <input v-model="searchQuery" type="text" class="form-control" placeholder="Search...">
+                <input v-model="searchQuery" type="text" class="form-control" placeholder="Search..." autofocus="autofocus">
             </div>
             <table class="table table-striped">
                 <thead>
@@ -38,7 +38,7 @@
                 <draggable v-model="books" :element="'tbody'" @end="onEnd">
                     <tr v-for="(book, index) in filteredBooks" :key="book.id">
                         <td v-if="showOrderColumn" width="50px" class="text-center">
-                            <button class="btn btn-outline-dark btn-sm" data-toggle="button">
+                            <button class="btn btn-sm btn-outline-dark" data-toggle="button">
                                 {{ book.order }}<br>
                                 <svg class="i-move" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1">
                                     <path d="M3 16 L29 16 M16 3 L16 29 M12 7 L16 3 20 7 M12 25 L16 29 20 25 M25 12 L29 16 25 20 M7 12 L3 16 7 20"></path>
@@ -59,8 +59,9 @@
                         </td>
                         <td>{{ book.author }}</td>
                         <td width="25px" class="text-danger">
-                            <button @click="deleteBook(book.id)" class="btn btn-sm btn-outline-danger">
-                                <svg class="i-trash" viewBox="0 0 32 32" width="12" height="12" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                            <button @click="deleteBook(book.id)" class="btn btn-sm btn-outline-danger" data-toggle="button">
+                                <small>Delete</small><br>
+                                <svg class="i-trash" viewBox="0 0 32 32" width="16" height="16" fill="none" stroke="currentcolor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
                                     <path d="M28 6 L6 6 8 30 24 30 26 6 4 6 M16 12 L16 24 M21 12 L20 24 M11 12 L12 24 M12 6 L13 2 19 2 20 6"></path>
                                 </svg>
                             </button>

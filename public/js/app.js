@@ -47341,6 +47341,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -47478,14 +47479,15 @@ var render = function() {
               }
             },
             [_c("path", { attrs: { d: "M16 2 L16 30 M2 16 L30 16" } })]
-          )
+          ),
+          _vm._v(" Add Book\n        ")
         ]
       ),
       _vm._v(" "),
       _c(
         "button",
         {
-          staticClass: "btn btn-default float-right ml-1",
+          staticClass: "btn btn-light float-right ml-1",
           attrs: { title: "Search", "data-toggle": "button" },
           on: { click: _vm.toggleSearch }
         },
@@ -47510,7 +47512,8 @@ var render = function() {
               _vm._v(" "),
               _c("path", { attrs: { d: "M23 23 L30 30" } })
             ]
-          )
+          ),
+          _vm._v(" Search\n        ")
         ]
       )
     ]),
@@ -47531,7 +47534,11 @@ var render = function() {
                       }
                     ],
                     staticClass: "form-control",
-                    attrs: { type: "text", placeholder: "Search..." },
+                    attrs: {
+                      type: "text",
+                      placeholder: "Search...",
+                      autofocus: "autofocus"
+                    },
                     domProps: { value: _vm.searchQuery },
                     on: {
                       input: function($event) {
@@ -47608,7 +47615,7 @@ var render = function() {
                               _c(
                                 "button",
                                 {
-                                  staticClass: "btn btn-outline-dark btn-sm",
+                                  staticClass: "btn btn-sm btn-outline-dark",
                                   attrs: { "data-toggle": "button" }
                                 },
                                 [
@@ -47696,6 +47703,7 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-sm btn-outline-danger",
+                              attrs: { "data-toggle": "button" },
                               on: {
                                 click: function($event) {
                                   _vm.deleteBook(book.id)
@@ -47703,14 +47711,17 @@ var render = function() {
                               }
                             },
                             [
+                              _c("small", [_vm._v("Delete")]),
+                              _c("br"),
+                              _vm._v(" "),
                               _c(
                                 "svg",
                                 {
                                   staticClass: "i-trash",
                                   attrs: {
                                     viewBox: "0 0 32 32",
-                                    width: "12",
-                                    height: "12",
+                                    width: "16",
+                                    height: "16",
                                     fill: "none",
                                     stroke: "currentcolor",
                                     "stroke-linecap": "round",
