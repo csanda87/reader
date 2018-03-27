@@ -49576,11 +49576,8 @@ var render = function() {
                             },
                             [
                               _c(
-                                "button",
-                                {
-                                  staticClass: "btn btn-sm btn-outline-dark",
-                                  attrs: { "data-toggle": "button" }
-                                },
+                                "div",
+                                { staticClass: "btn-sm btn-outline-dark" },
                                 [
                                   book.order
                                     ? _c("span", [
