@@ -127,7 +127,6 @@
         methods: {
             deleteBook(id) {
                 if (window.confirm("Are you sure you want to remove this book?")) { 
-                    alert('delete book id ' + id);
                     axios.delete('/api/books/' + id)
                         .then((response) => {
                             this.books = this.books.filter((book) => {

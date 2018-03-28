@@ -36,6 +36,7 @@ class BookController extends Controller
             $request->merge(['image' => $image]);
         }
 
+        $request->merge(['user_id' => auth()->user()->id]);
         $this->book->create($request->all());
 
         return redirect('/books');
@@ -74,6 +75,7 @@ class BookController extends Controller
             $request->merge(['image' => $image]);
         }
 
+        $request->merge(['user_id' => auth()->user()->id]);
         $book->update($request->all());
 
         return redirect('/books');
